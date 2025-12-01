@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Teste</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3498db">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(registration => {
+                    console.log('SW registered:', registration);
+
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdateToast(newWorker);
+                            }
+                        });
+                    });
+
+                    // If there's already a waiting worker, show toast
+                    if (registration.waiting) {
+                        showUpdateToast(registration.waiting);
+                    }
+                }).catch(error => console.log('SW registration failed:', error));
+
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        window.location.reload();
+                        refreshing = true;
+                    }
+                });
+            });
+        }
+
+        function showUpdateToast(worker) {
+            const toast = document.getElementById('updateToast');
+            const updateBtn = document.getElementById('updateAppBtn');
+
+            toast.classList.add('show');
+
+            updateBtn.addEventListener('click', () => {
+                worker.postMessage({ type: 'SKIP_WAITING' });
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to PWA Teste</h1>
+    <p>This is a simple HTML file for testing purposes.</p>
+    Versão 1.251201.0915
+</body>
+</html>
