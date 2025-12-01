@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwateste-v1.251201.0952';
+const CACHE_NAME = 'pwateste-v1.251201.1017';
 const ASSETS = [
   './',
   './index.html',
