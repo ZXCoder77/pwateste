@@ -9,7 +9,7 @@
 
 <body>
     <h1>Dashboard</h1>
-    <p>versão 1.251205.1929</p>
+    <p>versão 1.251205.1952</p>
     <?php
     date_default_timezone_set('America/Bahia');
     echo date('Y-m-d H:i:s');
