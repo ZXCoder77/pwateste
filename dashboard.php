@@ -9,7 +9,11 @@
 
 <body>
     <h1>Dashboard</h1>
-    <p>versão 1.251205.0717</p>
+    <p>versão 1.251205.1929</p>
+    <?php
+    date_default_timezone_set('America/Bahia');
+    echo date('Y-m-d H:i:s');
+    ?>
     <a href="index.html">Voltar</a>
 </body>
 
