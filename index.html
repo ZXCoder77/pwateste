@@ -115,6 +115,29 @@
             });
         }
 
+        function showUpdateToast(worker) {
+            const toast = document.getElementById('updateToast');
+            const updateBtn = document.getElementById('updateAppBtn');
+
+            if (!toast) {
+                console.warn('showUpdateToast: #updateToast not found in DOM');
+                return;
+            }
+
+            toast.classList.add('show');
+
+            // Use onclick to avoid adding multiple listeners if showUpdateToast is called repeatedly
+            if (updateBtn) {
+                updateBtn.onclick = () => {
+                    updateBtn.disabled = true;
+                    try { worker.postMessage({ type: 'SKIP_WAITING' }); } catch (e) { console.error(e); }
+                };
+            } else {
+                console.warn('showUpdateToast: #updateAppBtn not found in DOM');
+            }
+        }
+
+        /*
         function showUpdateToast() {
             const toast = document.getElementById('updateToast');
             toast.classList.add('show');
@@ -125,6 +148,7 @@
                 newWorker.postMessage({ type: 'SKIP_WAITING' });
             }
         }
+        */
     </script>
 </head>
 
@@ -135,10 +159,17 @@
     <br>
     Testado numero 6
     <a href="index-dashboard.html">Dashboard</a>
+    <!-- Update toast (shown when a new Service Worker is waiting) -->
+    <div id="updateToast" class="update-toast" aria-live="polite" role="status" style="display:none">
+        <span>Nova versão disponível</span>
+        <button id="updateAppBtn" class="update-btn">Atualizar</button>
+    </div>
+    <!--
     <div id="updateToast">
         Nova versão disponível.
         <button id="updateAppBtn" onclick="launchUpdate()">Atualizar</button>
     </div>
+    -->
 </body>
 
 </html>
